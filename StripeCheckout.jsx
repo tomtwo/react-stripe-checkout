@@ -12,7 +12,8 @@ var ReactStripeCheckout = React.createClass({
       className: 'StripeCheckout',
       label: 'Pay With Card',
       locale: 'auto',
-      componentClass: 'span'
+      componentClass: 'span',
+      disabled: false
     };
   },
 
@@ -157,7 +158,10 @@ var ReactStripeCheckout = React.createClass({
 
     // function() The callback to invoke when Checkout is closed (not supported
     // in IE6 and IE7).
-    closed: React.PropTypes.func
+    closed: React.PropTypes.func,
+
+    // Specify whether we should block the Stripe modal from appearing
+    disabled: React.PropTypes.bool
   },
 
   getInitialState: function() {
@@ -249,6 +253,8 @@ var ReactStripeCheckout = React.createClass({
   onClick: function() {
     if (ReactStripeCheckout.scriptDidError) {
       console.log('failed to load script');
+    } else if (this.props.disabled) {
+      // do nothing
     } else if (ReactStripeCheckout.stripeHandler) {
       this.showStripeDialog();
     } else {
