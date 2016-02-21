@@ -13,7 +13,7 @@ var ReactStripeCheckout = React.createClass({
       label: 'Pay With Card',
       locale: 'auto',
       componentClass: 'span',
-      disabled: false
+      isDisabled: (function() { return false; })
     };
   },
 
@@ -160,8 +160,9 @@ var ReactStripeCheckout = React.createClass({
     // in IE6 and IE7).
     closed: React.PropTypes.func,
 
-    // Specify whether we should block the Stripe modal from appearing
-    disabled: React.PropTypes.bool
+    // function() Specify whether we should block the Stripe modal from appearing
+    // defaults to returning false
+    isDisabled: React.PropTypes.func
   },
 
   getInitialState: function() {
@@ -253,7 +254,7 @@ var ReactStripeCheckout = React.createClass({
   onClick: function() {
     if (ReactStripeCheckout.scriptDidError) {
       console.log('failed to load script');
-    } else if (this.props.disabled) {
+    } else if (this.props.isDisabled()) {
       // do nothing
     } else if (ReactStripeCheckout.stripeHandler) {
       this.showStripeDialog();
